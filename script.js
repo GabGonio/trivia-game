@@ -5,9 +5,10 @@ document.addEventListener("DOMContentLoaded", function () {
     const form = document.getElementById("trivia-form");
     const questionContainer = document.getElementById("question-container");
     const newPlayerButton = document.getElementById("new-player");
+    const usernameInput = document.getElementById("username");
 
     // Initialize the game
-    // checkUsername(); Uncomment once completed
+    checkUsername();
     fetchQuestions();
     displayScores();
 
@@ -126,6 +127,39 @@ document.addEventListener("DOMContentLoaded", function () {
         return null;
     }
 
+    /**
+     * Checks whether a username cookie exists and updates the UI state.
+     * Returning players have their username shown and can switch users with
+     * the New Player button.
+     */
+    function checkUsername() {
+        const cookieUsername = getCookie("username");
+
+        if (cookieUsername) {
+            usernameInput.value = cookieUsername;
+            usernameInput.disabled = true;
+            newPlayerButton.classList.remove("hidden");
+        } else {
+            usernameInput.value = "";
+            usernameInput.disabled = false;
+            newPlayerButton.classList.add("hidden");
+        }
+    }
+
+    /**
+     * Placeholder for future score table rendering logic.
+     */
+    function displayScores() {
+        // Implemented in score persistence step.
+    }
+
+    /**
+     * Placeholder for future new player logic.
+     */
+    function newPlayer() {
+        // Implemented in session enhancement step.
+    }
+
     // Event listeners for form submission and new player button
     form.addEventListener("submit", handleFormSubmit);
     newPlayerButton.addEventListener("click", newPlayer);
@@ -136,6 +170,14 @@ document.addEventListener("DOMContentLoaded", function () {
      */
     function handleFormSubmit(event) {
         event.preventDefault();
+        const enteredName = usernameInput.value.trim();
+
+        if (enteredName && !getCookie("username")) {
+            setCookie("username", enteredName);
+        }
+
+        checkUsername();
+
         //... form submission logic including setting cookies and calculating score
     }
 });
