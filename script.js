@@ -159,8 +159,16 @@ document.addEventListener("DOMContentLoaded", function () {
      * @returns {number} The calculated score.
      */
     function calculateScore() {
-        // Implemented in score calculation step.
-        return 0;
+        const selectedAnswers = form.querySelectorAll('input[type="radio"]:checked');
+        let score = 0;
+
+        selectedAnswers.forEach((input) => {
+            if (input.dataset.correct === "true") {
+                score += 1;
+            }
+        });
+
+        return score;
     }
 
     /**
