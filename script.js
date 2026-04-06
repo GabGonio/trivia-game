@@ -128,6 +128,15 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     /**
+     * Deletes a cookie by setting its expiry date in the past.
+     *
+     * @param {string} name - The cookie key to delete.
+     */
+    function deleteCookie(name) {
+        document.cookie = `${encodeURIComponent(name)}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/`;
+    }
+
+    /**
      * Checks whether a username cookie exists and updates the UI state.
      * Returning players have their username shown and can switch users with
      * the New Player button.
@@ -199,11 +208,12 @@ document.addEventListener("DOMContentLoaded", function () {
         localStorage.setItem("triviaScores", JSON.stringify(savedScores));
     }
 
-    /**
-     * Placeholder for future new player logic.
-     */
     function newPlayer() {
-        // Implemented in session enhancement step.
+        deleteCookie("username");
+        form.reset();
+        checkUsername();
+        fetchQuestions();
+        usernameInput.focus();
     }
 
     // Event listeners for form submission and new player button
@@ -233,10 +243,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
         checkUsername();
 
-        // Placeholder flow for upcoming steps.
         const score = calculateScore();
         saveScore(activeUsername, score);
         displayScores();
+
+        alert(`${activeUsername}, you scored ${score} out of 10.`);
 
         // Prepare next round.
         fetchQuestions();
