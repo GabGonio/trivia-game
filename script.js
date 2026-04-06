@@ -254,10 +254,17 @@ document.addEventListener("DOMContentLoaded", function () {
         event.preventDefault();
         const enteredName = usernameInput.value.trim();
         const storedUsername = getCookie("username");
+        const totalQuestions = questionContainer.querySelectorAll("p").length;
+        const selectedAnswers = form.querySelectorAll('input[type="radio"]:checked').length;
 
         if (!enteredName && !storedUsername) {
             alert("Please enter a username before submitting.");
             usernameInput.focus();
+            return;
+        }
+
+        if (selectedAnswers < totalQuestions) {
+            alert("Please answer all questions before submitting your score.");
             return;
         }
 
