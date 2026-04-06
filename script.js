@@ -147,10 +147,26 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     /**
-     * Placeholder for future score table rendering logic.
+     * Retrieves and renders saved scores from localStorage.
      */
     function displayScores() {
-        // Implemented in score persistence step.
+        const scoreTableBody = document.querySelector("#score-table tbody");
+        const savedScores = JSON.parse(localStorage.getItem("triviaScores")) || [];
+
+        scoreTableBody.innerHTML = "";
+
+        savedScores.forEach((entry) => {
+            const row = document.createElement("tr");
+            const userCell = document.createElement("td");
+            const scoreCell = document.createElement("td");
+
+            userCell.textContent = entry.username;
+            scoreCell.textContent = entry.score;
+
+            row.appendChild(userCell);
+            row.appendChild(scoreCell);
+            scoreTableBody.appendChild(row);
+        });
     }
 
     /**
@@ -172,13 +188,15 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     /**
-     * Placeholder for score persistence logic.
+     * Saves a new score entry in localStorage without overwriting existing data.
      *
      * @param {string} username - Active player username.
      * @param {number} score - Calculated score for the round.
      */
     function saveScore(username, score) {
-        // Implemented in score persistence step.
+        const savedScores = JSON.parse(localStorage.getItem("triviaScores")) || [];
+        savedScores.push({ username, score });
+        localStorage.setItem("triviaScores", JSON.stringify(savedScores));
     }
 
     /**
