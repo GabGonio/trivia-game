@@ -45,6 +45,18 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     /**
+     * Decodes HTML entities returned by the trivia API.
+     *
+     * @param {string} value - Encoded API text.
+     * @returns {string} Decoded plain text.
+     */
+    function decodeHtml(value) {
+        const parser = document.createElement("textarea");
+        parser.innerHTML = value;
+        return parser.value;
+    }
+
+    /**
      * Displays fetched trivia questions.
      * @param {Object[]} questions - Array of trivia questions.
      */
@@ -52,14 +64,19 @@ document.addEventListener("DOMContentLoaded", function () {
         questionContainer.innerHTML = ""; // Clear existing questions
         questions.forEach((question, index) => {
             const questionDiv = document.createElement("div");
-            questionDiv.innerHTML = `
-                <p>${question.question}</p>
-                ${createAnswerOptions(
+
+            const questionText = document.createElement("p");
+            questionText.textContent = decodeHtml(question.question);
+
+            questionDiv.appendChild(questionText);
+            questionDiv.appendChild(
+                createAnswerOptions(
                     question.correct_answer,
                     question.incorrect_answers,
                     index
-                )}
-            `;
+                )
+            );
+
             questionContainer.appendChild(questionDiv);
         });
     }
@@ -69,7 +86,7 @@ document.addEventListener("DOMContentLoaded", function () {
      * @param {string} correctAnswer - The correct answer for the question.
      * @param {string[]} incorrectAnswers - Array of incorrect answers.
      * @param {number} questionIndex - The index of the current question.
-     * @returns {string} HTML string of answer options.
+     * @returns {HTMLDivElement} A container of answer option elements.
      */
     function createAnswerOptions(
         correctAnswer,
@@ -79,18 +96,27 @@ document.addEventListener("DOMContentLoaded", function () {
         const allAnswers = [correctAnswer, ...incorrectAnswers].sort(
             () => Math.random() - 0.5
         );
-        return allAnswers
-            .map(
-                (answer) => `
-            <label>
-                <input type="radio" name="answer${questionIndex}" value="${answer}" ${
-                    answer === correctAnswer ? 'data-correct="true"' : ""
-                }>
-                ${answer}
-            </label>
-        `
-            )
-            .join("");
+
+        const optionsContainer = document.createElement("div");
+
+        allAnswers.forEach((answer) => {
+            const label = document.createElement("label");
+            const input = document.createElement("input");
+
+            input.type = "radio";
+            input.name = `answer${questionIndex}`;
+            input.value = decodeHtml(answer);
+
+            if (answer === correctAnswer) {
+                input.dataset.correct = "true";
+            }
+
+            label.appendChild(input);
+            label.append(` ${decodeHtml(answer)}`);
+            optionsContainer.appendChild(label);
+        });
+
+        return optionsContainer;
     }
 
     /**
