@@ -154,6 +154,26 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     /**
+     * Placeholder for score calculation logic.
+     *
+     * @returns {number} The calculated score.
+     */
+    function calculateScore() {
+        // Implemented in score calculation step.
+        return 0;
+    }
+
+    /**
+     * Placeholder for score persistence logic.
+     *
+     * @param {string} username - Active player username.
+     * @param {number} score - Calculated score for the round.
+     */
+    function saveScore(username, score) {
+        // Implemented in score persistence step.
+    }
+
+    /**
      * Placeholder for future new player logic.
      */
     function newPlayer() {
@@ -171,13 +191,28 @@ document.addEventListener("DOMContentLoaded", function () {
     function handleFormSubmit(event) {
         event.preventDefault();
         const enteredName = usernameInput.value.trim();
+        const storedUsername = getCookie("username");
 
-        if (enteredName && !getCookie("username")) {
+        if (!enteredName && !storedUsername) {
+            alert("Please enter a username before submitting.");
+            usernameInput.focus();
+            return;
+        }
+
+        if (enteredName && !storedUsername) {
             setCookie("username", enteredName);
         }
 
+        const activeUsername = getCookie("username") || enteredName;
+
         checkUsername();
 
-        //... form submission logic including setting cookies and calculating score
+        // Placeholder flow for upcoming steps.
+        const score = calculateScore();
+        saveScore(activeUsername, score);
+        displayScores();
+
+        // Prepare next round.
+        fetchQuestions();
     }
 });
