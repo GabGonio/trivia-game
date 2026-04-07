@@ -19,10 +19,6 @@ This is the first executable line of form submission logic. Pausing here confirm
 
 ## Breakpoint 2 - API Success Callback
 
-### Location
-- Function: fetchQuestions()
-- Breakpoint line: displayQuestions(data.results); (line 24)
-
 ### Why this is a logical breakpoint
 This is the point where parsed API data is first used. It verifies the successful async path before UI rendering.
 
@@ -41,10 +37,6 @@ This is the point where parsed API data is first used. It verifies the successfu
 	- Confirms transition from loading state to displayed question state
 
 ## Breakpoint 3 - Score Calculation Logic
-
-### Location
-- Function: calculateScore()
-- Breakpoint line: if (input.dataset.correct === "true") (line 217)
 
 ### Why this is a logical breakpoint
 This condition controls whether score increments. Pausing here verifies correctness checks for each selected answer.
